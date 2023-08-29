@@ -6,7 +6,8 @@ plugins {
 	id 'io.spring.dependency-management' version '1.1.3'
 //	id 'com.adarshr.test-logger' version '2.1.1'
 //	id 'com.github.ben-manes.versions' version '0.38.0'
-	id 'org.liquibase.gradle' version '2.2.0' //2 шаг
+	//Когда плагин liquibase применяется, он создает Gradle-таски для каждой команды, поддерживаемой Liquibase.
+	id 'org.liquibase.gradle' version '2.2.0' //2 шаг  https://github.com/liquibase/liquibase-gradle-plugin
 	// Плагины для swagger
 	// Позволяют получить сгенерированную документацию по API в виде json файла
 //	id 'org.springdoc.openapi-gradle-plugin' version '1.3.3'
@@ -31,9 +32,9 @@ dependencies {
 	compileOnly 'org.projectlombok:lombok' //2 шаг
 
 	annotationProcessor( //2 шаг актуал
-			'org.projectlombok:lombok',
-			'com.querydsl:querydsl-apt:5.0.0:jakarta',
-			'jakarta.persistence:jakarta.persistence-api:3.1.0'
+		'org.projectlombok:lombok',
+		'com.querydsl:querydsl-apt:5.0.0:jakarta',
+		'jakarta.persistence:jakarta.persistence-api:3.1.0'
 	)
 
 	implementation(
@@ -45,21 +46,32 @@ dependencies {
 //			'org.springframework.boot:spring-boot-starter-security',
 			'org.liquibase:liquibase-core', //2 шаг актуал
 			'com.querydsl:querydsl-jpa:5.0.0:jakarta', //2 шаг актуал
-			'com.rollbar:rollbar-spring-boot-webmvc:1.10.0' //2 шаг
+			'com.rollbar:rollbar-spring-boot-webmvc:1.10.0', //2 шаг
+			'org.postgresql:postgresql:42.6.0' //2 шаг есть у Егора
+
 //			'io.jsonwebtoken:jjwt:0.9.1',
 			// Зависимость для swagger
 			// Позволяет сгенерировать и проматривать интерактивную документацию по API
 	)
 
 
-
+// LG-Плагин должен иметь возможность находить Liquibase в пути к классам при запуске таски, а Liquibase должен иметь
+// возможность находить драйверы базы данных, анализаторы журнала изменений и т. д. в пути к классам.
+// Это делается путем добавления liquibaseRuntime-зависимостей к dependencies блоку
 	liquibaseRuntime( // 2 шаг
-			sourceSets.main.output,
-			'org.liquibase:liquibase-core',
-			'info.picocli:picocli:4.7.1',
+			//Пользователям модуля liquibase-hibernate, которым необходимо запустить команду Hibernate diff
+			// или создать changelog из классов Entity, нужно будет добавить что-то вроде следующего в ваши
+			// liquibaseRuntime-зависимости:
 			'org.liquibase.ext:liquibase-hibernate6:4.21.1',
+			sourceSets.main.output, //необходимо, чтобы Hibernate мог найти ваши Entity классы.
+
+			'org.liquibase:liquibase-core', //почему не пишем версию, а в других местах пишем?
+			'info.picocli:picocli:4.7.1', //https://github.com/liquibase/liquibase-gradle-plugin
+			'org.yaml:snakeyaml:2.2', //https://github.com/liquibase/liquibase-gradle-plugin
 			'org.springframework.boot:spring-boot-starter-data-jpa',
-			'com.h2database:h2'
+			'com.h2database:h2',
+			'mysql:mysql-connector-java:8.0.33' //https://github.com/liquibase/liquibase-gradle-plugin
+			// postgres??
 	)
 
 	runtimeOnly ( //2 шаг
@@ -101,22 +113,48 @@ diffChangelog {
 	dependsOn compileJava
 }
 
+
+//Настройка LG-плагина предполагает понимание трех основных элементов: команд, параметров и действий.
+//
+//command — это команда Liquibase, такая как dropAll, updateили diffChangelog. Это то, что вы хотите, чтобы Liquibase
+// делала, как описано в документации по командам Liquibase . Плагин Liquibase Gradle создает таск для каждой команды
+// Liquibase, и именно так пользователи сообщают Gradle, что он хочет от Liquibase.
+//
+//parameters относятся к параметрам, которые отправляются в Liquibase для настройки того, как Liquibase будет запускать
+// command. Сюда входят такие вещи, как учетные данные базы данных, расположение changelog файла и т. д. Параметры
+// также описаны в документации по командам Liquibase . Параметры обычно настраиваются в разделе «activities»
+// блока liquibase.
+//
+//activities — самые сложные из трех. command — это задача низкого уровня, которую необходимо выполнить, тогда как
+// activity — это более высокий уровень, более широкая категория, и ее можно использовать для запуска одной и той же
+// команды разными способами. Например, развертывание приложения может включать обновление схемы приложения,
+// но также может включать вставку метаданных о приложении в реестр. Плагин достигает этого, позволяя пользователям
+// определять два действия, каждое из которых относится к различным базам данных и changlog'ам.
+// Activities также можно рассматривать как набор параметров, которые необходимо сгруппировать.
 liquibase {
 	activities {
 		main {
-			// Изменилось имя свойства, которое указывает путь к файлу
-			// Формат xml для changelog файла тоже признан устаревшим
-			// По умолчанию предлагается использовать имя файла db.changelog-master.yaml
 			changelogFile 'src/main/resources/db/changelog/db.changelog-master.yaml'
 			url 'jdbc:h2:./taskManager'
 			// Теперь не требуется указывать имя и пароль для подключения к БД
-			referenceUrl 'hibernate:spring:hexlet.code.model.' +
+			referenceUrl 'hibernate:spring:hexlet.code.model' +
 					// Указываем диалект
 					'?dialect=org.hibernate.dialect.H2Dialect' +
 					// Изменилось стратегия именования
 					// По умолчанию теперь используется CamelCaseToUnderscoresNamingStrategy
 					'&hibernate.physical_naming_strategy=org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy'
 		}
+//		production { // здесь пишем конфиг для postgres (APPENV=production)?
+//			changelogFile 'src/main/resources/db/changelog/db.changelog-master.yaml'
+//			url 'jdbc:h2:./taskManager'
+//			// Теперь не требуется указывать имя и пароль для подключения к БД
+//			referenceUrl 'hibernate:spring:hexlet.code.model.' +
+//					// Указываем диалект
+//					'?dialect=org.hibernate.dialect.H2Dialect' +
+//					// Изменилось стратегия именования
+//					// По умолчанию теперь используется CamelCaseToUnderscoresNamingStrategy
+//					'&hibernate.physical_naming_strategy=org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy'
+//		}
 	}
 }
 //// Сборка фронтенда.
