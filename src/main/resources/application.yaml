@@ -8,20 +8,10 @@ logging:
 spring:
   # Настраиваем подключение к базе данных
   datasource:
-    default: ${APP_ENV}  #${APP_ENV} #development
-
-    development:
-#    нужно смещение!!! вместо = были двоеточия
-      url=jdbc:h2:~/taskManager
-      username=sa
-      password=sa
-      driverClassName=org.h2.Driver
-
-    production:
-      url=jdbc:postgresql://${PGHOST}:${PGPORT}/${PGDATABASE} #${JDBC_DATABASE_URL}
-      username=${PGUSER} #${JDBC_DATABASE_USERNAME}
-      password=${PGPASSWORD} #${JDBC_DATABASE_PASSWORD}
-
+    url=jdbc:h2:~/taskManager
+    username=sa
+    password=sa
+    driverClassName=org.h2.Driver
 
   # Настраиваем инструмент Liquibase
   # Указываем путь к основному файлу миграции
@@ -32,7 +22,7 @@ spring:
   jpa:
     database-platform=org.hibernate.dialect.H2Dialect
     show-sql=true #Егор 
-    hibernate.ddl-auto=validate #Егор
+    hibernate.ddl-auto=update #Егор
 
 # Настраиваем консоль Н2
 # Это позволит нам открыть её в браузере по указанному пути

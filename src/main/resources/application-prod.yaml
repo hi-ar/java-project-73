@@ -1,0 +1,10 @@
+server:
+  port: ${PORT}
+
+spring:
+  # Настраиваем подключение к базе данных
+  datasource:
+    url=jdbc:postgresql://${PGHOST}:${PGPORT}/${PGDATABASE} #${JDBC_DATABASE_URL}
+    username=${PGUSER} #${JDBC_DATABASE_USERNAME}
+    password=${PGPASSWORD} #${JDBC_DATABASE_PASSWORD}
+    driverClassName=org.postgresql.Driver

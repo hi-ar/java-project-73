@@ -134,8 +134,8 @@ diffChangelog {
 liquibase {
 	activities {
 		main {
-			changelogFile 'src/main/resources/db/changelog/db.changelog-master.yaml'
-			url 'jdbc:h2:./taskManager'
+			changelogFile "src/main/resources/db/changelog/db.changelog-master.yaml"
+			url "jdbc:h2:~/taskManager"
 			// Теперь не требуется указывать имя и пароль для подключения к БД
 			referenceUrl 'hibernate:spring:hexlet.code.model' +
 					// Указываем диалект
@@ -144,17 +144,6 @@ liquibase {
 					// По умолчанию теперь используется CamelCaseToUnderscoresNamingStrategy
 					'&hibernate.physical_naming_strategy=org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy'
 		}
-//		production { // здесь пишем конфиг для postgres (APPENV=production)?
-//			changelogFile 'src/main/resources/db/changelog/db.changelog-master.yaml'
-//			url 'jdbc:h2:./taskManager'
-//			// Теперь не требуется указывать имя и пароль для подключения к БД
-//			referenceUrl 'hibernate:spring:hexlet.code.model.' +
-//					// Указываем диалект
-//					'?dialect=org.hibernate.dialect.H2Dialect' +
-//					// Изменилось стратегия именования
-//					// По умолчанию теперь используется CamelCaseToUnderscoresNamingStrategy
-//					'&hibernate.physical_naming_strategy=org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy'
-//		}
 	}
 }
 //// Сборка фронтенда.
