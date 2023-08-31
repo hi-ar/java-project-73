@@ -1,35 +1,10 @@
-server:
-  port: ${PORT:8080}
-
 logging:
   level:
     root: INFO
 
 spring:
-  # Настраиваем подключение к базе данных
-  datasource:
-    url=jdbc:h2:~/taskManager
-    username=sa
-    password=sa
-    driverClassName=org.h2.Driver
-
   # Настраиваем инструмент Liquibase
   # Указываем путь к основному файлу миграции
   liquibase:
-    change-log=classpath:resources/db/changelog/db.changelog-master.yaml
-
-#  скопировал из мануала спринг
-  jpa:
-    database-platform=org.hibernate.dialect.H2Dialect
-    show-sql=true #Егор 
-    hibernate.ddl-auto=update #Егор
-
-# Настраиваем консоль Н2
-# Это позволит нам открыть её в браузере по указанному пути
-h2:
-  console:
-    enabled: true
-      # Указываем путь, по которому будет окрываться консоль
-    path: /h2console/
-    settings:
-      web-allow-others: true
+    change-log=classpath:db.changelog/db.changelog-master.yaml
+  # было change-log=classpath:resources/db/changelog/db.changelog-master.yaml

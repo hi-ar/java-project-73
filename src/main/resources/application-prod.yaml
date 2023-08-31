@@ -8,3 +8,8 @@ spring:
     username=${PGUSER} #${JDBC_DATABASE_USERNAME}
     password=${PGPASSWORD} #${JDBC_DATABASE_PASSWORD}
     driverClassName=org.postgresql.Driver
+
+  jpa:
+    database-platform=org.hibernate.dialect.PostgreSQLDialect
+    show-sql=true #Егор 
+    hibernate.ddl-auto=update #Егор
