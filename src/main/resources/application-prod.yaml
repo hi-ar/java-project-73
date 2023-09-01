@@ -4,12 +4,10 @@ server:
 spring:
   # Настраиваем подключение к базе данных
   datasource:
-    url=jdbc:postgresql://${PGHOST}:${PGPORT}/${PGDATABASE} #${JDBC_DATABASE_URL}
-    username=${PGUSER} #${JDBC_DATABASE_USERNAME}
-    password=${PGPASSWORD} #${JDBC_DATABASE_PASSWORD}
-    driverClassName=org.postgresql.Driver
+    url: jdbc:postgresql://${PGHOST}:${PGPORT}/${PGDATABASE} #${JDBC_DATABASE_URL}
+    username: ${PGUSER} #${JDBC_DATABASE_USERNAME}
+    password: ${PGPASSWORD} #${JDBC_DATABASE_PASSWORD}
+    driverClassName: org.postgresql.Driver
 
   jpa:
-    database-platform=org.hibernate.dialect.PostgreSQLDialect
-    show-sql=true #Егор 
-    hibernate.ddl-auto=update #Егор
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
