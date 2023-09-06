@@ -77,12 +77,12 @@ dependencies {
 			// или создать changelog из классов Entity, нужно будет добавить что-то вроде следующего в ваши
 			// liquibaseRuntime-зависимости:
 			sourceSets.main.output, //необходимо, чтобы Hibernate мог найти ваши Entity классы.
-			'org.liquibase.ext:liquibase-hibernate6:4.21.1', //пробовал :4.23.1',
+			'org.liquibase.ext:liquibase-hibernate6', //пробовал :4.21.1  :4.23.1',
 			//https://repo1.maven.org/maven2/org/liquibase/ext/liquibase-hibernate6/
 
 			'org.liquibase:liquibase-core', //было так 'org.liquibase:liquibase-core', а так же :4.23.1
-			'info.picocli:picocli:4.7.1', //https://github.com/liquibase/liquibase-gradle-plugin
-			'org.yaml:snakeyaml:2.2', //https://github.com/liquibase/liquibase-gradle-plugin
+			'info.picocli:picocli:4.6.3', //https://github.com/liquibase/liquibase-gradle-plugin было 4.6.3
+			'org.yaml:snakeyaml:2.0', //https://github.com/liquibase/liquibase-gradle-plugin было 2.2
 			'org.springframework.boot:spring-boot-starter-data-jpa', //пробовал :3.1.3'
 			'com.h2database:h2',
 			// postgres??
@@ -146,8 +146,11 @@ diffChangelog {
 liquibase {
 	activities {
 		main {
-			changelogFile "src/main/resources/db/changelog/db.changelog-master.yaml"
-			url "jdbc:h2:./taskManager" //почему определяем h2 а не в зависимости от dev/prod?
+			// Указываем путь, по которому будет сгенерирован файл миграции
+			changelogFile "src/main/resources/db/changelog/db.changelog-master.xml"
+			// Указывем источник, с которым будут сравниваться изменения. Это база данных, изначально она пустая
+			url "jdbc:h2:~/taskManager" //почему определяем h2 а не в зависимости от dev/prod?
+			// вариант url 'jdbc:h2:file:./taskManager'
 			// Теперь не требуется указывать имя и пароль для подключения к БД
 			referenceUrl 'hibernate:spring:hexlet.code.model.' +
 					// Указываем диалект

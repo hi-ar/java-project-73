@@ -4,9 +4,15 @@ server:
 spring:
   # Настраиваем подключение к базе данных
   datasource:
-    url: jdbc:postgresql://${PGHOST}:${PGPORT}/${PGDATABASE} #${JDBC_DATABASE_URL}
-    username: ${PGUSER} #${JDBC_DATABASE_USERNAME}
-    password: ${PGPASSWORD} #${JDBC_DATABASE_PASSWORD}
+    url: jdbc:postgres://${PGUSER}:${PGHOST}/${PGDATABASE}
+#postgres://  task_manager_sql_user  :  EjDUiL71qEv7Uu1TrymMoecDQABCzRpo@dpg-cjsd4g5htt0c73aumnk0-a  /  task_manager_sql
+    username: ${PGUSER}
+    password: ${PGPASSWORD}
+
+#    settings for railway deploy:
+#      url: jdbc:postgresql://${PGHOST}:${PGPORT}/${PGDATABASE}
+#      username: ${PGUSER}
+#      password: ${PGPASSWORD}
     driverClassName: org.postgresql.Driver
 
   jpa:

@@ -1,5 +1,5 @@
-#start:
-#	./gradlew bootRun --args='--spring.profiles.active=dev'
+start:
+	./gradlew bootRun --args='--spring.profiles.active=dev'
 
 setup:
 	cd frontend && npm install
