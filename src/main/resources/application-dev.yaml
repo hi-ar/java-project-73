@@ -4,13 +4,15 @@ server:
 spring:
   # Настраиваем подключение к базе данных
   datasource:
-    url: jdbc:h2:~/taskManager
-    username: sa
-    password: sa
+    url: jdbc:h2:~/taskManager #Мария: url: "jdbc:h2:file:./taskManager"
+    username:
+    password:
     driverClassName: org.h2.Driver
 
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop #908-1
 
 # Настраиваем консоль Н2
 # Это позволит нам открыть её в браузере по указанному пути
@@ -18,6 +20,6 @@ h2:
   console:
     enabled: true
       # Указываем путь, по которому будет окрываться консоль
-    path: /h2console/
+    path: /h2-console/
     settings:
       web-allow-others: true

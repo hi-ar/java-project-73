@@ -2,13 +2,13 @@ logging:
   level:
     root: INFO
 
-# Базовый урл /api лучше хранить в виде отдельной переменной в конфиге
+# Базовый урл /api лучше хранить в виде отдельной переменной в конфиге (3 шаг)
 spring:
   application:
     name: taskManager
 
-  profiles:
-    active: ${APP_ENV:dev}
+#  profiles:
+#    active: ${APP_ENV:dev}
   # Настраиваем инструмент Liquibase
   # Указываем путь к основному файлу миграции
   liquibase:
@@ -17,4 +17,5 @@ spring:
 
   jpa:
     show-sql: true #Егор
-    hibernate.ddl-auto: validate #Егор
+    hibernate:
+      ddl-auto: none #то же что без отступов spring.jpa.hibernate.ddl-auto: none
