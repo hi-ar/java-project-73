@@ -22,4 +22,5 @@ spring:
 #      ddl-auto: create-drop #908-1
   # Используем тот же файл миграции, что и для базы данных в приложении
   liquibase:
+    enabled: true
     change-log: classpath:db/changelog/db.changelog-master.xml

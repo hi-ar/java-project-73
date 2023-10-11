@@ -91,20 +91,24 @@ dependencies {
 
 
 	testImplementation(
+			platform("org.junit:junit-bom:5.10.0"), // заменяет test { useJUnitPlatform() } в корне
 //			'org.springframework.boot:spring-boot-starter-security',
-//			'org.springframework.security:spring-security-test',
 			'org.springframework.boot:spring-boot-starter-test',
-//			'com.tobedevoured.modelcitizen:spring:0.8.3'
+//			'com.tobedevoured.modelcitizen:spring:0.8.3',
+			'org.junit.jupiter:junit-jupiter:5.10.0',
+//			'org.springframework.security:spring-security-test', //Понадобится когда мы начнем работать с аутентификацией
+			'net.javacrumbs.json-unit:json-unit-assertj:3.2.2', // новая статья
+			'com.github.database-rider:rider-junit5:1.41.0' //наполнение фикстурами
 	)
+}
+
+test {
+	useJUnitPlatform()
 }
 
 wrapper {
 	gradleVersion = '8.2.1'
 	distributionType = Wrapper.DistributionType.ALL
-}
-
-test {
-	useJUnitPlatform()
 }
 
 checkstyle {
