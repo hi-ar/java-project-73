@@ -33,7 +33,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @DBRider
 //@DataSet("users.yaml")
 public class UserControllerTest {
-    private static final String PATH = "/api/users";
+    public static final String PATH = "/api/users";
     @Autowired
     MockMvc mockMvc;
     @Autowired

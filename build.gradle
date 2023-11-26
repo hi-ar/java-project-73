@@ -41,16 +41,16 @@ dependencies {
 	implementation(
 			'org.springframework.boot:spring-boot-starter-data-jpa', //2 шаг
 			'org.springframework.boot:spring-boot-starter-web',
-//			'org.springframework.boot:spring-boot-starter-actuator', //работает без него?
+//			'org.springframework.boot:spring-boot-starter-actuator', //localhost:9000/hello-world -> {"id":1,"content":"Hello, World!"}
 			'org.springframework.boot:spring-boot-starter-validation', //3 шаг (@Notblank in Dto)
-//			'org.springframework.boot:spring-boot-starter-security',
+			'org.springframework.boot:spring-boot-starter-security', //4 шаг (org.springframework.security.core.userdetails.UserDetails)
+			'org.springframework.boot:spring-boot-starter-oauth2-resource-server', //4 шаг, исп EncConfig
 			'org.springframework.boot:spring-boot-configuration-processor', //valentin
 			'org.liquibase:liquibase-core', //2 шаг, было так 'org.liquibase:liquibase-core' а так же :4.23.1'
 			'com.querydsl:querydsl-jpa:5.0.0:jakarta', //2 шаг актуал
 			'com.rollbar:rollbar-spring-boot-webmvc:1.10.0', //2 шаг
-			'org.postgresql:postgresql:42.6.0' //2 шаг есть у Егора
-
-//			'io.jsonwebtoken:jjwt:0.9.1',
+			'org.postgresql:postgresql:42.6.0', //2 шаг есть у Егора
+			'io.jsonwebtoken:jjwt:0.9.1' //4 шаг json web token выдается при авторизации
 			// Зависимость для swagger
 			// Позволяет сгенерировать и проматривать интерактивную документацию по API
 	)
@@ -92,7 +92,7 @@ dependencies {
 
 	testImplementation(
 			platform("org.junit:junit-bom:5.10.0"), // заменяет test { useJUnitPlatform() } в корне
-//			'org.springframework.boot:spring-boot-starter-security',
+//			'org.springframework.boot:spring-boot-starter-security', //4 шаг
 			'org.springframework.boot:spring-boot-starter-test',
 //			'com.tobedevoured.modelcitizen:spring:0.8.3',
 			'org.junit.jupiter:junit-jupiter:5.10.0',

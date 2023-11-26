@@ -3,17 +3,17 @@ user:
     firstName: Mon
     lastName: Jan
     email: 1@google.com
-    password: 1111
+    password: abc
     createdAt: 2023-10-09T05:38:38.778+00:00
   - id: 2
     firstName: Tue
     lastName: Feb
     email: 2@google.com
-    password: 2222
+    password: abc
     createdAt: 2023-10-09T05:38:38.778+00:00
   - id: 3
     firstName: Wed
     lastName: Mar
     email: 3@google.com
-    password: 3333
+    password: abc
     createdAt: 2023-10-09T05:38:38.778+00:00

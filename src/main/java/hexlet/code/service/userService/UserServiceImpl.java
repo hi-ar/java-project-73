@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -26,6 +27,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Override
     public User findById(long id) {
         return userRepository.findById(id)
@@ -40,9 +44,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User createUser(UserDto dto) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        dto.setHashedPwd(getHashedPwd(dto.getPassword()));
-        userRepository.save(new User(dto));
-        return findByDto(dto);
+        User user = new User(dto);
+        user.setPasswordDigest(passwordEncoder.encode(dto.getPassword()));
+        userRepository.save(user);
+        return user;
     }
 
     @Override
@@ -53,7 +58,7 @@ public class UserServiceImpl implements UserService {
         toUpdate.setFirstName(dto.getFirstName());
         toUpdate.setLastName(dto.getLastName());
         toUpdate.setEmail(dto.getEmail());
-        toUpdate.setPassword(getHashedPwd(dto.getPassword()));
+        toUpdate.setPasswordDigest(passwordEncoder.encode(dto.getPassword()));
         userRepository.save(toUpdate);
         return findById(id);
     }
@@ -66,6 +71,7 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteById(id);
     }
 
+    //no usages:
     private User findByDto(UserDto dto) {
         List<User> usersToReturn = (List) userRepository.findAll(
                 QUser.user.firstName.eq(dto.getFirstName())
@@ -78,7 +84,7 @@ public class UserServiceImpl implements UserService {
         }
         return usersToReturn.get(0);
     }
-
+    //no usages:
     private String getHashedPwd(String stringPwd) throws NoSuchAlgorithmException, InvalidKeySpecException {
         SecureRandom random = new SecureRandom();
         byte[] salt = new byte[16];
@@ -88,7 +94,7 @@ public class UserServiceImpl implements UserService {
         SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
 
         String hashedPwd = Arrays.toString(factory.generateSecret(spec).getEncoded());
-        log.warn("§§§§§§ " + stringPwd + " -> " + hashedPwd);
+        log.info("§§§§§§ " + stringPwd + " -> " + hashedPwd);
         return hashedPwd;
     }
 }

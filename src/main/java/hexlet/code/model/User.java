@@ -21,19 +21,21 @@ package hexlet.code.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import hexlet.code.dto.UserDto;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.Data;
 //import org.hibernate.annotations.CreationTimestamp;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 //import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -42,17 +44,20 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 
-public class User {
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     private String firstName;
     private String lastName;
+
+    @Column(unique = true)
+    @Email
     private String email;
 
     @JsonIgnore
-    private String password;
+    private String passwordDigest;
 
 //    @CreationTimestamp
 //    private Date createdAt;
@@ -64,8 +69,46 @@ public class User {
         this.firstName = dto.getFirstName();
         this.lastName = dto.getLastName();
         this.email = dto.getEmail();
-        this.password = dto.getPassword();
+        this.passwordDigest = dto.getPassword();
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<SimpleGrantedAuthority> default_authorities = List.of(new SimpleGrantedAuthority("default"));
+        return default_authorities;
+    }
+
+    @Override
+    public String getPassword() {
+        return passwordDigest;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true; //t
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true; //t
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true; //t
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true; //t
     }
 //    @LastModifiedDate
 //    private Date updatedAt;
+
+
 }

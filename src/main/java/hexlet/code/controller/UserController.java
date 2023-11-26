@@ -11,7 +11,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("${base-url}" + "/users")
 public class UserController {
     @Autowired
     private UserServiceImpl userService;

@@ -3,6 +3,8 @@ logging:
     root: INFO
 
 # Базовый урл /api лучше хранить в виде отдельной переменной в конфиге (3 шаг)
+base-url: /api
+
 spring:
   application:
     name: taskManager
@@ -19,3 +21,10 @@ spring:
     show-sql: true #Егор
     hibernate:
       ddl-auto: none #то же что без отступов spring.jpa.hibernate.ddl-auto: none
+
+  rsa:
+    private-key: classpath:resources/certs/private.pem
+    public-key: classpath:resources/certs/public.pem
+    # private.pem, public.pem
+    # Не забудьте, что хранить приватный ключ в репозитории в реальных проектах нельзя.
+    # Доступ к приватному ключу должен быть ограничен.
