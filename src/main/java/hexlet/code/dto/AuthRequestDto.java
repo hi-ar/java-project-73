@@ -8,10 +8,9 @@ import lombok.Data;
 @AllArgsConstructor
 @Data
 public class AuthRequestDto {
-    @NotBlank(message = "login should not be empty")
-    @Email(message = "Incorrect login (email)")
+//    @NotBlank(message = "login should not be empty")
     private String email;
 
-    @NotBlank(message = "password should not be empty")
+//    @NotBlank(message = "password should not be empty")
     private String password;
 }
