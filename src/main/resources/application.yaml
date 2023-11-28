@@ -22,9 +22,9 @@ spring:
     hibernate:
       ddl-auto: none #то же что без отступов spring.jpa.hibernate.ddl-auto: none
 
-  rsa:
-    private-key: classpath:resources/certs/private.pem
-    public-key: classpath:resources/certs/public.pem
+rsa:
+  private-key: classpath:certs/private.pem
+  public-key: classpath:certs/public.pem
     # private.pem, public.pem
     # Не забудьте, что хранить приватный ключ в репозитории в реальных проектах нельзя.
     # Доступ к приватному ключу должен быть ограничен.

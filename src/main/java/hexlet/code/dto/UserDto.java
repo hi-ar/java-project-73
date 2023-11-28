@@ -21,8 +21,4 @@ public class UserDto {
     @NotBlank(message = "Password should not be empty")
     @Size(min = 3, max = 100, message = "Password should have from 3 to 100 chars")
     private String password;
-
-    public void setHashedPwd(String password) {
-        this.password = password;
-    }
 }

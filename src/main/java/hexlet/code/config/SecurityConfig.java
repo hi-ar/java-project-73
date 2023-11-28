@@ -46,9 +46,10 @@ public class SecurityConfig {
         httpSecurity
                 .csrf(csrf -> csrf.disable())   //межсайтовая подделка запроса
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.GET, "/users").permitAll()
-                        .requestMatchers("/login").permitAll()  //на смену antMatchers(), было "/login/**"
-                        .anyRequest().authenticated()
+//                        .requestMatchers(HttpMethod.GET, "/api/users").permitAll() //получить список юзеров
+//                        .requestMatchers(HttpMethod.POST, "/api/users").permitAll() //регистрация нового
+//                        .requestMatchers(HttpMethod.POST, "/api/login").permitAll()  //на смену antMatchers(), было "/login/**"
+                        .anyRequest().permitAll()
                 );
         return httpSecurity.build();
     }

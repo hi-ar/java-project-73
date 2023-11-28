@@ -28,7 +28,7 @@ public class AuthController {
 
     private Logger log = LoggerFactory.getLogger(AuthController.class);
 
-    @PostMapping(path = "/")
+    @PostMapping() //(path = "/")
     ResponseEntity<String> authenticate(@RequestBody AuthRequestDto authRequestDto) throws Exception {
         try {
             authenticationManager.authenticate( //см выше

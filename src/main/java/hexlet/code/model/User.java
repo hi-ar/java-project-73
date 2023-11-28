@@ -72,37 +72,44 @@ public class User implements UserDetails {
         this.passwordDigest = dto.getPassword();
     }
 
+    @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> default_authorities = List.of(new SimpleGrantedAuthority("default"));
         return default_authorities;
     }
 
+    @JsonIgnore
     @Override
     public String getPassword() {
         return passwordDigest;
     }
 
+    @JsonIgnore
     @Override
     public String getUsername() {
         return email;
     }
 
+    @JsonIgnore
     @Override
     public boolean isAccountNonExpired() {
         return true; //t
     }
 
+    @JsonIgnore
     @Override
     public boolean isAccountNonLocked() {
         return true; //t
     }
 
+    @JsonIgnore
     @Override
     public boolean isCredentialsNonExpired() {
         return true; //t
     }
 
+    @JsonIgnore
     @Override
     public boolean isEnabled() {
         return true; //t
