@@ -28,14 +28,15 @@ public class AuthController {
 
     private Logger log = LoggerFactory.getLogger(AuthController.class);
 
-    @PostMapping() //(path = "/")
-    ResponseEntity<String> authenticate(@RequestBody AuthRequestDto authRequestDto) throws Exception {
+    @PostMapping()
+    ResponseEntity<String> authenticate(@RequestBody AuthRequestDto authRequestDto) {
         try {
+            log.info("§§§AuthCont: got l/p: " + authRequestDto.getEmail() + " non hashed pwd:" + authRequestDto.getPassword());
             authenticationManager.authenticate( //см выше
-                    new UsernamePasswordAuthenticationToken(authRequestDto.getEmail(), authRequestDto.getPassword())
+            new UsernamePasswordAuthenticationToken(authRequestDto.getEmail(), authRequestDto.getPassword())
             );
         } catch (Exception e) {
-            log.info("§§§AuthCont: ivalid l/p: " + authRequestDto.getEmail() + " hpwd:" + authRequestDto.getPassword());
+            log.info("§§§AuthCont: ivalid l/p");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("invalid login/password");
         }
 
@@ -43,3 +44,27 @@ public class AuthController {
     }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

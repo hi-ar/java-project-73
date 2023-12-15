@@ -52,7 +52,7 @@ public class JWTUtils {
 
         Jwt jwt = this.encoder.encode(JwtEncoderParameters.from(claims));
         String token = jwt.getTokenValue();
-        log.info("§§§§§ " + username + " -> " + token);
+        log.info("§§§§§ new token for correct login " + username + " -> " + token);
         return token;
     }
 }

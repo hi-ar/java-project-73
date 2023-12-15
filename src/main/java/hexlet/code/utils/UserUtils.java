@@ -3,13 +3,10 @@ package hexlet.code.utils;
 import hexlet.code.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-
-import java.util.Optional;
 
 
 @Component
@@ -17,7 +14,7 @@ public class UserUtils {
 
     Logger log = LoggerFactory.getLogger("§§§HAS ACCESS: ");
 
-    public boolean hasAccess(User owner) {
+    public boolean currentHasAccessTo(User owner) {
         SecurityContext seqCtx = SecurityContextHolder.getContext(); //связывает данный SeqCtx с текущим потоком выполнения
         Authentication auth = seqCtx.getAuthentication();
         // auth.isAuthenticated() true, если токен был аутентифицирован
@@ -32,5 +29,14 @@ public class UserUtils {
             return true;
         }
         return false;
+    }
+
+    public String getCurrentLogin() {
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        Authentication authentication = securityContext.getAuthentication();
+        if (authentication == null) {
+            return new String("<authentication is null>");
+        }
+        return authentication.getName();
     }
 }

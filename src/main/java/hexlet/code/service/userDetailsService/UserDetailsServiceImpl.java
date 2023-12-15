@@ -7,15 +7,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
 @Service
-public class UserDetailsServiceImpl implements UserDetailsService {
+public class UserDetailsServiceImpl implements UserDetailsManager { //UserDetailsService было
     @Autowired
     private UserRepository userRepository;
 
@@ -31,5 +31,30 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 user.getPasswordDigest(), default_authorities);
 
         return ud;
+    }
+
+    @Override
+    public void createUser(UserDetails user) {
+        throw new UnsupportedOperationException("Unimplemented method createUser() in UDServiceImml");
+    }
+
+    @Override
+    public void updateUser(UserDetails user) {
+        throw new UnsupportedOperationException("Unimplemented method updateUser() in UDServiceImml");
+    }
+
+    @Override
+    public void deleteUser(String username) {
+        throw new UnsupportedOperationException("Unimplemented method deleteUser() in UDServiceImml");
+    }
+
+    @Override
+    public void changePassword(String oldPassword, String newPassword) {
+        throw new UnsupportedOperationException("Unimplemented method changePwd() in UDServiceImml");
+    }
+
+    @Override
+    public boolean userExists(String username) {
+        throw new UnsupportedOperationException("Unimplemented method UserExists() in UDServiceImml");
     }
 }

@@ -1,7 +1,11 @@
 package hexlet.code.exception;
 
-public class ResourceNotFoundException extends Exception {
+public class ResourceNotFoundException extends RuntimeException {
     private String message;
+
+    public ResourceNotFoundException(String message) {
+        super(message);
+    }
 
     public ResourceNotFoundException(String message, String message1) {
         super(message);
