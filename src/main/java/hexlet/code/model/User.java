@@ -21,8 +21,15 @@ package hexlet.code.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import hexlet.code.dto.UserDto;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 //import org.hibernate.annotations.CreationTimestamp;
 import lombok.NoArgsConstructor;
@@ -49,11 +56,14 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    //@NotBlank
     private String firstName;
+
+    //@NotBlank
     private String lastName;
 
     @Column(unique = true)
-    @Email
+    //@Email
     private String email;
 
     @JsonIgnore

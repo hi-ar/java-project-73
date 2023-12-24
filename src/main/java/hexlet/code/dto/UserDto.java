@@ -8,17 +8,17 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class UserDto {
-    @NotBlank(message = "First Name should not be empty")
+    @NotBlank
     private String firstName;
 
-    @NotBlank(message = "Last Name should not be empty")
+    @NotBlank
     private String lastName;
 
-    @NotBlank(message = "Email should not be empty")
-    @Email(message = "Incorrect Email")
+    @NotBlank
+    @Email
     private String email;
 
-    @NotBlank(message = "Password should not be empty")
+    @NotBlank
     @Size(min = 3, max = 100, message = "Password should have from 3 to 100 chars")
     private String password;
 }

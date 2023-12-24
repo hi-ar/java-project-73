@@ -1,10 +1,8 @@
 package hexlet.code.service.userService;
 
 import hexlet.code.dto.UserDto;
-import hexlet.code.exception.DefaultException;
 import hexlet.code.exception.ExistsException;
 import hexlet.code.exception.ForbiddenException;
-import hexlet.code.exception.UnprocessibleException;
 import hexlet.code.model.User;
 import hexlet.code.repository.UserRepository;
 import hexlet.code.utils.UserUtils;
@@ -15,12 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
-import java.util.concurrent.ExecutionException;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -52,25 +47,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User createUser(@Valid UserDto dto) {
-        try {
-            User newUser = new User(dto);
-            if (userRepository.findByEmail(newUser.getEmail()).isPresent()) {
-                throw new ExistsException("User with email " + newUser.getEmail() + " already exists");
-            }
-            newUser.setPasswordDigest(passwordEncoder.encode(dto.getPassword()));
-            userRepository.save(newUser);
-            return newUser;
-        } catch (RuntimeException exception) {
-            throw new DefaultException("default msg 418 plus " + exception.getMessage());
+    public User createUser(UserDto dto) { //validated
+        User newUser = new User(dto);
+        if (userRepository.findByEmail(newUser.getEmail()).isPresent()) {
+            throw new ExistsException("User with email " + newUser.getEmail() + " already exists");
         }
+        newUser.setPasswordDigest(passwordEncoder.encode(dto.getPassword()));
+        userRepository.save(newUser);
+        return newUser;
     }
 
     @Override
-    public User updateUser(long id, @Valid UserDto dto) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    public User updateUser(long id, UserDto dto) { //validated
         User userToUpdate = userRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,
-                        "User with id " + id + " not found")); //после сообщения еще есть экспшен
+                        "User with id " + id + " not found"));
 
         if (!userUtils.currentHasAccessTo(userToUpdate)) {
             throw new ForbiddenException("User with id " + id + " is not accessible with current login: "
@@ -88,7 +79,7 @@ public class UserServiceImpl implements UserService {
     public void deleteUser(long id) {
         User userToDelete = userRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,
-                        "User with id " + id + " not found")); //после сообщения еще есть экспшен
+                        "User with id " + id + " not found"));
         if (!userUtils.currentHasAccessTo(userToDelete)) {
             throw new ForbiddenException("User with id " + id + " is not accessible with current login: "
                     + userUtils.getCurrentLogin());
@@ -96,7 +87,6 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteById(id);
     }
 
-//    no usages:
 //    private String getHashedPwd(String stringPwd) throws NoSuchAlgorithmException, InvalidKeySpecException {
 //        SecureRandom random = new SecureRandom();
 //        byte[] salt = new byte[16];

@@ -6,6 +6,7 @@ import hexlet.code.service.userService.UserServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.NoSuchAlgorithmException;
@@ -32,13 +33,13 @@ public class UserController {
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public User createUser(@RequestBody UserDto dto) { //убрал отсюда валид
+    public User createUser(@RequestBody @Valid UserDto dto) { //убрал отсюда валид
         return userService.createUser(dto);
     }
 
     @PutMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public User updateUser(@PathVariable long id, @Valid @RequestBody UserDto dto) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    public User updateUser(@PathVariable long id, @RequestBody @Valid UserDto dto) {
         return userService.updateUser(id, dto);
     }
 
