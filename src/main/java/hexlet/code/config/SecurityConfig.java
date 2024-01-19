@@ -63,6 +63,10 @@ public class SecurityConfig {
         httpSecurity
                 .csrf(csrf -> csrf.disable())   //межсайтовая подделка запроса
                 .authorizeHttpRequests(requests -> requests
+                        .requestMatchers("/api/static").permitAll()
+                        .requestMatchers("/api/static/index.html").permitAll()
+                        .requestMatchers("index.html").permitAll()
+                        .requestMatchers("/assets/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/users").permitAll() //получить список юзеров
                         // /api/users/* разрешит открывать /api/users/1   api/users/** разрешает любую последоват
                         .requestMatchers(HttpMethod.POST, "/api/users").permitAll() //регистрация нового

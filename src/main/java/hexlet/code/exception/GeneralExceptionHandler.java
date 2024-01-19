@@ -31,10 +31,10 @@ public class GeneralExceptionHandler extends ResponseEntityExceptionHandler {
 //                .body(shortener(exc.getMessage(), "interpolatedMessage"));
 //    }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<String> methodArgumentNotValidException(Exception exc) {
-        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(exc.getMessage());
-    }
+//    @ExceptionHandler(MethodArgumentNotValidException.class)
+//    public ResponseEntity<String> methodArgumentNotValidException(MethodArgumentNotValidException exc) {
+//        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(exc.getMessage());
+//    }
 
     private String shortener(String message, String param) {
         if(message.contains(param)) {
